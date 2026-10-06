@@ -55,28 +55,28 @@ Google ofrece el **AI Studio Free Tier** con acceso completo a `gemini-2.0-flash
 
 ---
 
-## 3. 💳 Cómo Sacar tus Credenciales de Mercado Pago Gratis ($0 Costo Fijo)
+## 3. 💳 Cómo Sacar tus Credenciales de Flow.cl Gratis ($0 Costo Fijo)
 
-Mercado Pago no cobra costo de instalación ni mensualidad. Solo deduce una pequeña comisión cuando se concreta una venta real.
+**Flow.cl** es la pasarela de pagos chilena por excelencia para cobrar con **Webpay Plus (Débito y Crédito en cuotas), Mach, Servipag, Banco Estado y Cryptos**. No cobra costo de instalación ni mensualidad fija, solo comisión por venta concretada.
 
 ### Pasos:
-1. Si estás en Chile, ingresa a: **[Mercado Pago Developers Chile](https://www.mercadopago.cl/developers)** (o el país de tu cuenta en Latam).
-2. Inicia sesión con tu cuenta de Mercado Pago o Mercado Libre.
-3. Haz clic en **"Tus integraciones"** (o "Panel de desarrollador") -> **"Crear aplicación"**.
-4. Llena los datos básicos:
-   - Nombre: `Segar AI Marketing`
-   - ¿Qué solución vas a integrar?: **"Checkout Pro"** o **"Cobros en mi sitio web"**.
-5. Ve a la pestaña **"Credenciales de prueba"** (para probar) o **"Credenciales de producción"** (para cobrar dinero real).
-6. Copia tu **Access Token** (`APP_USR-...`) y tu **Public Key**.
-7. Pégalas en `.env.local`:
+1. Ingresa a: **[Flow.cl](https://www.flow.cl/)**.
+2. Haz clic en **"Crear Cuenta"** (puedes registrarte como persona natural o como empresa con RUT).
+3. Una vez dentro de tu panel de Flow, ve al menú superior derecho -> **"Mis Datos"** o **"Seguridad / API Keys"**.
+4. Encontrarás tus credenciales de integración:
+   - **API Key** (Identificador público)
+   - **Secret Key** (Clave secreta de firma HMAC-SHA256)
+5. Pégalas en tu archivo `.env.local` (o variables de entorno de Vercel):
    ```env
-   MERCADOPAGO_ACCESS_TOKEN=APP_USR-tu-token-aqui
-   MERCADOPAGO_PUBLIC_KEY=APP_USR-tu-public-key
+   FLOW_API_KEY=tu-api-key-de-flow
+   FLOW_SECRET_KEY=tu-secret-key-de-flow
+   FLOW_ENV=production
    ```
-8. **Configurar el Webhook:**
-   - En tu aplicación en Mercado Pago Developers, ve a **"Webhooks"** / **"Notificaciones IPN"**.
-   - Ingresa la URL: `https://tu-dominio.com/api/webhooks/mercadopago`.
-   - Marca los eventos de: **"Pagos (Payments)"**. ¡Listo! Cada pago activará la suscripción automáticamente en Firestore.
+6. **Configurar el Webhook de Confirmación:**
+   - La pasarela ya tiene configurada la URL de confirmación automática en el código hacia:
+     `https://tu-dominio.com/api/webhooks/flow`
+   - Cuando un cliente pague con Webpay o Mach, Flow notificará a ese endpoint y Segar AI activará la membresía del cliente al instante.
+7. *Para pruebas (opcional):* Si quieres probar antes de pasar a producción, puedes crear una cuenta gratuita en **[Sandbox Flow](https://sandbox.flow.cl/)** y configurar `FLOW_ENV=sandbox`.
 
 ---
 
