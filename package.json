@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "^14.2.15",
+    
     "clsx": "^2.1.1",
     "csstype": "^3.2.3",
     "jspdf": "^2.5.2",
