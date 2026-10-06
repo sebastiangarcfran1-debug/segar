@@ -1,0 +1,38 @@
+{
+  "users": {
+    "demo_user": {
+      "userId": "demo_user",
+      "email": "demo@segar.ai",
+      "nombre": "Negocio Demo Chile",
+      "rubro": "Comercio / Tienda Online",
+      "instagram": "@demo.chile",
+      "plan": "emprendedor",
+      "postsUsados": 5,
+      "anunciosUsados": 1,
+      "closerRespuestasUsadas": 18,
+      "periodoInicio": "2026-10-06T00:51:35.320Z",
+      "activo": true,
+      "origenPago": "mercadopago"
+    }
+  },
+  "onboardings": {},
+  "posts": {},
+  "anuncios": {},
+  "chats": {},
+  "transactions": [
+    {
+      "id": "trx_demo_01",
+      "userId": "demo_user",
+      "plan": "emprendedor",
+      "montoCLP": 15000,
+      "metodo": "mercadopago",
+      "estado": "approved",
+      "fecha": "2026-10-06T00:51:35.322Z"
+    }
+  ],
+  "metrics": {
+    "totalGeminiCalls": 12,
+    "totalPollinationsImages": 10,
+    "totalRevenueCLP": 15000
+  }
+}
