@@ -160,13 +160,6 @@ export async function createFlowPayment(params: {
   const commerceOrder = `segar_${params.planId}_${isAnual ? 'anual_' : ''}${Date.now()}`;
 
   // Si no hay API Key de Flow configurada aún o es de prueba
-  if (!config.apiKey || !config.secretKey || config.apiKey.includes('tu-flow-api-key') || config.apiKey.length < 6) {
-    console.warn('⚠️ [FLOW.CL] Llaves reales pendientes en el Super Admin. Redirigiendo a pantalla de confirmación.');
-    return {
-      url: `${baseUrl}/checkout/success?plan=${params.planId}&userId=${params.userId}&billingCycle=${isAnual ? 'anual' : 'mensual'}&flow_mock=true`,
-      token: `flow_pending_${Date.now()}`,
-    };
-  }
 
   const payload: Record<string, any> = {
     apiKey: config.apiKey,
