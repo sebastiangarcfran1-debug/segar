@@ -17,7 +17,10 @@ import {
   ChevronRight,
   Menu,
   X,
+  Palette,
+  Crosshair,
   Zap,
+  TrendingUp,
 } from 'lucide-react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -32,17 +35,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   });
 
   useEffect(() => {
-    fetch('/api/admin')
+    fetch('/api/user-stats')
       .then((res) => res.json())
       .then((data) => {
-        const demoUser = data?.users?.find((u: any) => u.userId === 'demo_user') || data?.users?.[0];
-        if (demoUser) {
+        if (data) {
           setUserStats({
-            plan: demoUser.plan,
-            postsUsados: demoUser.postsUsados || 0,
-            maxPosts: demoUser.plan === 'emprendedor' ? 30 : demoUser.plan === 'pro' ? 100 : 300,
-            closerUsados: demoUser.closerRespuestasUsadas || 0,
-            maxCloser: demoUser.plan === 'emprendedor' ? 200 : demoUser.plan === 'pro' ? 1000 : 3000,
+            plan: data.plan || 'pro',
+            postsUsados: data.postsUsados || 0,
+            maxPosts: data.maxPosts || 100,
+            closerUsados: data.closerRespuestasUsadas || 0,
+            maxCloser: data.maxCloser || 1000,
           });
         }
       })
@@ -51,9 +53,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const navItems = [
     { name: 'Resumen Principal', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Diagnóstico 360 & PDF', href: '/dashboard/diagnostico', icon: Search },
+    { name: 'Banner Studio Pro', href: '/dashboard/banner-studio', icon: Sparkles },
+    { name: 'Video Ads & Reels', href: '/dashboard/video-ads', icon: Zap },
+    { name: 'Cerebro RAG Negocio', href: '/dashboard/cerebro', icon: Palette },
+    { name: 'Calendario Omnicanal', href: '/dashboard/calendario', icon: Calendar },
+    { name: 'CRM & Embudo Ventas', href: '/dashboard/crm', icon: Crosshair },
     { name: 'Fábrica 30 Posts & Ads', href: '/dashboard/contenido', icon: Calendar },
+    { name: 'Brand Kit & Voz IA', href: '/dashboard/brand-kit', icon: Palette },
+    { name: 'Radar de Competencia', href: '/dashboard/radar', icon: Search },
     { name: 'Closer de Ventas IA', href: '/dashboard/closer', icon: MessageSquare },
+    { name: 'Autopiloto Meta API', href: '/dashboard/autopilot', icon: Zap },
+    { name: 'Métricas ROI ($ Generado)', href: '/dashboard/roi', icon: TrendingUp },
+    { name: 'Diagnóstico 360 & PDF', href: '/dashboard/diagnostico', icon: Search },
     { name: 'Bot Telegram Control', href: '/dashboard/telegram', icon: Bot },
     { name: 'Modo Agencia (Autoventa)', href: '/dashboard/agencia', icon: Megaphone },
     { name: 'Panel Super Admin', href: '/dashboard/admin', icon: Shield },

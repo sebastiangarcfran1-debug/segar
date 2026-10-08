@@ -12,11 +12,22 @@ import {
   TrendingUp,
   Target,
   ArrowRight,
+  Bot,
+  Play,
+  Loader2,
+  Instagram,
+  Facebook,
+  CheckCircle2,
+  Clock,
 } from 'lucide-react';
 
 export default function AgenciaPage() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedPostIdx, setCopiedPostIdx] = useState<number | null>(null);
+
+  // Estado del Piloto Automático
+  const [loadingAutoPost, setLoadingAutoPost] = useState(false);
+  const [autoPostResult, setAutoPostResult] = useState<any>(null);
 
   const referralLink = 'https://segar.ai/?ref=segar_vip_chile_2026';
 
@@ -30,7 +41,7 @@ export default function AgenciaPage() {
     {
       dia: 'Miércoles',
       tema: 'Cómo vender por WhatsApp mientras duermes',
-      copy: `El 73% de las ventas en Chile se pierden porque el cliente pregunta precio a las 23:00 hrs y le responden al día siguiente a las 11:00 am. 😴\n\nTu cliente ya le compró a la competencia.\n\nActiva un Closer con Inteligencia Artificial entrenado con tu catálogo de productos que responde en 4 segundos, rebate dudas y pasa el link de pago de MercadoPago al instante.\n\n📲 Toca el enlace de nuestro perfil y pruébalo gratis.`,
+      copy: `El 73% de las ventas en Chile se pierden porque el cliente pregunta precio a las 23:00 hrs y le responden al día siguiente a las 11:00 am. 😴\n\nTu cliente ya le compró a la competencia.\n\nActiva un Closer con Inteligencia Artificial entrenado con tu catálogo de productos que responde en 4 segundos, rebate dudas y pasa el link de pago al instante.\n\n📲 Toca el enlace de nuestro perfil y pruébalo gratis.`,
       cta: 'Venta de urgencia por atención lenta',
     },
     {
@@ -53,17 +64,117 @@ export default function AgenciaPage() {
     setTimeout(() => setCopiedPostIdx(null), 2000);
   };
 
+  const dispararPilotoAutomatico = async () => {
+    setLoadingAutoPost(true);
+    setAutoPostResult(null);
+    try {
+      const res = await fetch('/api/cron/autopromocion', {
+        method: 'POST',
+      });
+      const data = await res.json();
+      setAutoPostResult(data);
+    } catch (err: any) {
+      console.error(err);
+      alert('Error ejecutando autopromoción automática.');
+    } finally {
+      setLoadingAutoPost(false);
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-black text-white flex items-center gap-2">
           <Megaphone className="h-6 w-6 text-indigo-400" />
-          Modo Agencia & Sistema de Referidos Viral ($0 en Ads)
+          Modo Agencia & Autopromoción en Redes ($0 en Ads)
         </h1>
         <p className="mt-1 text-xs text-slate-400">
-          La estrategia para vender las primeras 250 membresías de Segar AI Marketing sin gastar $1 en publicidad pagada.
+          El sistema publica de manera 100% autónoma en tus redes sociales para captar clientes orgánicamente y llegar a las primeras 250 membresías.
         </p>
+      </div>
+
+      {/* SECCIÓN NUEVA: PILOTO AUTOMÁTICO DE REDES SOCIALES (CRON 24/7) */}
+      <div className="rounded-3xl border border-purple-500/40 bg-gradient-to-r from-purple-950/40 via-slate-900 to-[#0e1629] p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 rounded-full bg-purple-500/20 px-3 py-1 text-xs font-bold text-purple-300 mb-3 border border-purple-500/30">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              PILOTO AUTOMÁTICO ACTIVO (META GRAPH API + GEMINI)
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-white">
+              Publicación Diaria Autónoma en Instagram & Facebook
+            </h2>
+            <p className="mt-2 text-xs text-slate-300 leading-relaxed">
+              Todos los días a las <strong>11:00 hrs (Horario Peak Chile)</strong>, Segar AI redacta un tip educativo de alto impacto con Gemini, genera la foto publicitaria con Pollinations (Flux) y la sube automáticamente a tus páginas de Instagram y Facebook sin que tengas que abrir la computadora.
+            </p>
+
+            <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-slate-400">
+              <span className="flex items-center gap-1.5"><Instagram className="h-4 w-4 text-pink-400" /> Instagram Content API</span>
+              <span className="flex items-center gap-1.5"><Facebook className="h-4 w-4 text-blue-400" /> Facebook Pages API</span>
+              <span className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-indigo-400" /> Cron Diario Programado</span>
+            </div>
+          </div>
+
+          <div className="w-full lg:w-auto shrink-0 flex flex-col gap-2">
+            <button
+              onClick={dispararPilotoAutomatico}
+              disabled={loadingAutoPost}
+              className="w-full lg:w-auto py-3.5 px-6 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xl shadow-purple-600/30 transition disabled:opacity-50"
+            >
+              {loadingAutoPost ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Redactando con Gemini y Publicando...</span>
+                </>
+              ) : (
+                <>
+                  <Play className="h-4 w-4 fill-white" />
+                  <span>Disparar Publicación Automática AHORA</span>
+                </>
+              )}
+            </button>
+            <span className="text-[10px] text-slate-400 text-center block">Prueba en vivo instantánea</span>
+          </div>
+        </div>
+
+        {/* Resultado del Post Generado y Publicado en Vivo */}
+        {autoPostResult && (
+          <div className="mt-6 pt-6 border-t border-slate-800/80 rounded-2xl bg-slate-900/90 p-5 border border-slate-700 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                <CheckCircle2 className="h-4 w-4" />
+                ¡Publicación Ejecutada con Éxito ({autoPostResult.fecha})!
+              </span>
+              <span className="text-[10px] text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md">
+                Notificación enviada a Telegram
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div className="relative h-44 rounded-xl overflow-hidden bg-slate-800 border border-slate-700">
+                <img
+                  src={autoPostResult.imageUrl}
+                  alt="Post preview"
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute bottom-2 left-2 rounded bg-black/70 px-2 py-0.5 text-[10px] text-white">
+                  Generada con Flux
+                </span>
+              </div>
+              <div className="md:col-span-2 space-y-2">
+                <h4 className="font-bold text-white text-sm">{autoPostResult.tema}</h4>
+                <p className="whitespace-pre-line text-[11px] text-slate-300 leading-relaxed bg-[#0a0f1d] p-3 rounded-xl border border-slate-800 max-h-32 overflow-y-auto">
+                  {autoPostResult.copy}
+                </p>
+                <div className="flex gap-4 text-[11px] text-slate-400 pt-1">
+                  <span>Instagram: <strong className="text-pink-400">{autoPostResult.publicaciones?.instagram?.mock ? 'Simulado (Listo para credenciales)' : 'Publicado'}</strong></span>
+                  <span>Facebook: <strong className="text-blue-400">{autoPostResult.publicaciones?.facebook?.mock ? 'Simulado' : 'Publicado'}</strong></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Tarjeta de Meta 250 Membresías */}
@@ -134,15 +245,15 @@ export default function AgenciaPage() {
         </div>
       </div>
 
-      {/* Autopromoción Diaria: Venta Orgánica */}
+      {/* Autopromoción Manual / Plantillas */}
       <div className="space-y-4">
         <div>
           <h3 className="text-base font-bold text-white flex items-center gap-2">
             <Target className="h-5 w-5 text-indigo-400" />
-            Contenido Semanal Listo para Vender Segar AI
+            Contenido Semanal de Respaldo para Vender Segar AI
           </h3>
           <p className="text-xs text-slate-400">
-            Copia y pega estos posts en las redes de Segar AI todos los días para atraer pymes orgánicamente sin gastar en anuncios.
+            Plantillas adicionales listas para copiar en caso de querer publicar manualmente en LinkedIn o estados de WhatsApp.
           </p>
         </div>
 

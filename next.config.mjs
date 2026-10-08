@@ -1,3 +1,12 @@
+import dns from 'node:dns';
+
+// Forzar prioridad IPv4 en resolución DNS para evitar cuellos de botella de IPv6 en Windows / proveedores chilenos
+try {
+  dns.setDefaultResultOrder('ipv4first');
+} catch (e) {
+  // Ignorar si no está soportado en la versión de Node
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,

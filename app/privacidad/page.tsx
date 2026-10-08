@@ -59,7 +59,7 @@ export default function PrivacidadPage() {
           <section className="space-y-2">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider text-indigo-400">5. Derechos del Usuario (ARCO)</h2>
             <p>
-              Conforme a la Ley 19.628 de Protección de la Vida Privada de Chile, usted tiene derecho a solicitar el acceso, rectificación, cancelación u oposición al tratamiento de sus datos personales escribiéndonos a <strong className="text-white">contacto@segar.ai</strong> o a través de nuestro soporte oficial de WhatsApp.
+              Conforme a la Ley 19.628 de Protección de la Vida Privada de Chile, usted tiene derecho a solicitar el acceso, rectificación, cancelación u oposición al tratamiento de sus datos personales escribiéndonos a <strong className="text-white">operaciones.segar.ant@gmail.com</strong> o a través de nuestro soporte oficial de WhatsApp al <strong className="text-emerald-400">+56 9 91842110</strong>.
             </p>
           </section>
         </div>

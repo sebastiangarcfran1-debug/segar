@@ -21,12 +21,26 @@ import {
   Copy,
   ExternalLink,
 } from 'lucide-react';
+import { CONTACT_INFO } from '@/lib/contact';
 
 export default function LandingPage() {
   const [currency, setCurrency] = useState<'CLP' | 'USD'>('CLP');
+  const [billingCycle, setBillingCycle] = useState<'mensual' | 'anual'>('mensual');
   const [transferModalPlan, setTransferModalPlan] = useState<string | null>(null);
   const [loadingCheckout, setLoadingCheckout] = useState<string | null>(null);
   const [costoAgencia, setCostoAgencia] = useState(350000);
+  const [payAlert, setPayAlert] = useState<'required' | 'expired' | null>(null);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('pay_required') === 'true') {
+        setPayAlert('required');
+      } else if (params.get('expired') === 'true') {
+        setPayAlert('expired');
+      }
+    }
+  }, []);
 
   const plans = [
     {
@@ -35,15 +49,18 @@ export default function LandingPage() {
       descripcion: 'Para emprendedores que necesitan presencia constante y cerrar ventas todos los días.',
       precioCLP: '$15.000',
       precioUSD: '$17 USD',
+      precioAnualCLP: '$149.000',
+      precioAnualUSD: '$165 USD',
       periodo: '/mes',
       destacado: false,
       caracteristicas: [
-        '30 publicaciones del mes con copies y ganchos',
-        'Imágenes publicitarias generadas con IA (100% gratis)',
-        'Diagnóstico 360 y Plan de Marketing en PDF',
-        'Closer de Ventas IA: 200 respuestas automáticas/mes',
+        '30 publicaciones del mes con copies y ganchos virales',
+        'Banner & Ad Studio: Crea anuncios con logo y precios en CLP',
+        'Calendario Drag & Drop tipo Metricool para todo el mes',
+        'Cerebro RAG del Negocio: Cero alucinaciones con tus precios reales',
+        'CRM & Embudo Kanban de Ventas para WhatsApp',
+        'Diagnóstico 360 y Plan de Crecimiento en PDF',
         'Control móvil vía Bot de Telegram (Aprobar/Corregir)',
-        'Horarios óptimos de publicación para Chile/Latam',
       ],
       cta: 'Elegir Plan Emprendedor',
     },
@@ -54,16 +71,19 @@ export default function LandingPage() {
       descripcion: 'Para negocios en crecimiento que quieren dominar su rubro y escalar ventas.',
       precioCLP: '$29.900',
       precioUSD: '$33 USD',
+      precioAnualCLP: '$289.000',
+      precioAnualUSD: '$320 USD',
       periodo: '/mes',
       destacado: true,
       caracteristicas: [
-        '100 publicaciones mensuales con imágenes HD',
-        'Creador de Anuncios: 15 sets de copys y headlines',
-        'Guiones de video para TikTok/Reels con CapCut',
+        'Todo lo del Plan Emprendedor +',
+        '100 publicaciones mensuales con imágenes Flux HD',
+        'Video Ads & Guiones de Reels con locutor de voz IA en vivo',
+        'Autopiloto Meta Graph API: Publicación directa a Instagram & FB',
+        'Radar de Competencia: Espía el Instagram de tus rivales',
+        'Brand Kit & Voz de Marca con psicología chilena y local',
         'Closer de Ventas IA: 1.000 respuestas en WhatsApp/IG',
-        'Entrenamiento con el catálogo y PDF de tu negocio',
-        'Soporte prioritario y acceso a nuevas herramientas',
-        'Bot de Telegram con reescritura ilimitada',
+        'Soporte prioritario y concierge directo',
       ],
       cta: 'Quiero Escalar con el Plan Pro',
     },
@@ -73,17 +93,40 @@ export default function LandingPage() {
       descripcion: 'Para agencias y profesionales que gestionan múltiples marcas o clientes.',
       precioCLP: '$59.900',
       precioUSD: '$67 USD',
+      precioAnualCLP: '$599.000',
+      precioAnualUSD: '$660 USD',
       periodo: '/mes',
       destacado: false,
       caracteristicas: [
-        'Hasta 3 marcas o clientes simultáneos',
-        '300 publicaciones y creativos mensuales',
-        'Closer de Ventas IA: 3.000 respuestas mensuales',
-        'Reportes de diagnóstico en PDF con tu logo',
-        'Modo Agencia con autopromoción automática',
-        'Acceso al Panel Super Administrador de clientes',
+        'Todo lo del Plan Pro +',
+        'Gestión de hasta 3 marcas o clientes simultáneos',
+        'Modo Marca Blanca (White-Label) para revender con tu logo',
+        'Panel Super Administrador con CRM Concierge VIP',
+        '300 publicaciones, banners y video ads mensuales',
+        'Generador de Estrategia Maestra VIP de 30 días con Gemini',
+        'Acceso prioritario a nuevas herramientas de IA',
       ],
       cta: 'Adquirir Plan Agencia',
+    },
+    {
+      id: 'enterprise',
+      nombre: 'Plan Enterprise',
+      descripcion: 'Para franquicias, empresas grandes y agencias a gran escala con marca blanca total.',
+      precioCLP: '$179.000',
+      precioUSD: '$199 USD',
+      precioAnualCLP: '$1.790.000',
+      precioAnualUSD: '$1.990 USD',
+      periodo: '/mes',
+      destacado: false,
+      caracteristicas: [
+        'Todo lo del Plan Agencia +',
+        'Marcas y cuentas ilimitadas en paralelo',
+        'Marca Blanca 100% total con dominio propio CNAME',
+        'Autopiloto Meta Graph API en todas las marcas',
+        'Closer de Ventas IA ilimitado en WhatsApp Cloud API',
+        'Infraestructura aislada de alta velocidad y Account Manager 24/7',
+      ],
+      cta: 'Adquirir Plan Enterprise',
     },
   ];
 
@@ -95,28 +138,28 @@ export default function LandingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           planId,
+          billingCycle,
           userEmail: 'cliente@segar.ai',
+          appUrl: typeof window !== 'undefined' ? window.location.origin : '',
         }),
       });
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
       } else {
-        window.location.href = `/checkout/success?plan=${planId}&flow_mock=true`;
+        window.location.href = `/checkout/success?plan=${planId}&billingCycle=${billingCycle}&flow_mock=true`;
       }
     } catch (err) {
       console.error(err);
-      window.location.href = `/checkout/success?plan=${planId}&flow_mock=true`;
+      window.location.href = `/checkout/success?plan=${planId}&billingCycle=${billingCycle}&flow_mock=true`;
     } finally {
       setLoadingCheckout(null);
     }
   };
 
   const getWhatsAppTransferLink = (planName: string, monto: string) => {
-    const texto = encodeURIComponent(
-      `¡Hola equipo de Segar AI Marketing! Acabo de hacer la transferencia para activar mi membresía "${planName}" (${monto} ${currency}). Adjunto mi comprobante para que activen mi cuenta. Mi correo es:`
-    );
-    return `https://wa.me/56912345678?text=${texto}`;
+    const texto = `¡Hola equipo de Segar AI Marketing! Acabo de hacer la transferencia para activar mi membresía "${planName}" (${billingCycle === 'anual' ? 'Plan Anual' : 'Plan Mensual'}: ${monto} ${currency}). Adjunto mi comprobante para que activen mi cuenta. Mi correo es:`;
+    return CONTACT_INFO.getWhatsAppUrl(texto);
   };
 
   return (
@@ -134,7 +177,10 @@ export default function LandingPage() {
             <span>SEGAR <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">AI MARKETING</span></span>
           </Link>
 
-          <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+          <nav className="hidden items-center gap-7 text-sm font-medium text-slate-300 md:flex">
+            <Link href="/auditoria" className="text-amber-400 font-bold hover:text-amber-300 transition flex items-center gap-1">
+              ⚡ Auditoría Gratis (60s)
+            </Link>
             <a href="#solucion" className="hover:text-white transition">Qué hace</a>
             <a href="#planes" className="hover:text-white transition">Planes $0</a>
             <a href="#bot-telegram" className="hover:text-white transition">Bot Telegram</a>
@@ -187,10 +233,10 @@ export default function LandingPage() {
               Probar Ahora desde $15.000 CLP
             </a>
             <Link
-              href="/dashboard/diagnostico"
+              href="/auditoria"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 border border-slate-700 px-6 py-4 text-base font-semibold text-slate-200 transition hover:bg-slate-800"
             >
-              Auditoría 360 de tu Instagram
+              ⚡ Auditoría Gratuita de Instagram (60s)
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -198,7 +244,7 @@ export default function LandingPage() {
           <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400">
             <span className="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-emerald-400" /> Sin contratos ni permanencia</span>
             <span className="flex items-center gap-1.5"><CreditCard className="h-4 w-4 text-indigo-400" /> Webpay Plus / Flow.cl (Tarjetas / Mach)</span>
-            <span className="flex items-center gap-1.5"><Smartphone className="h-4 w-4 text-purple-400" /> Transferencia CuentaRUT / Banco Estado</span>
+            <span className="flex items-center gap-1.5"><Smartphone className="h-4 w-4 text-purple-400" /> Transferencia Copec Pay / Cuenta Vista</span>
           </div>
         </div>
 
@@ -428,7 +474,24 @@ export default function LandingPage() {
 
       {/* Pricing Section */}
       <section id="planes" className="py-24 px-6 relative">
+        <div id="precios" className="absolute -top-16" />
         <div className="mx-auto max-w-7xl">
+          {payAlert && (
+            <div className="mb-8 rounded-2xl border border-amber-500/50 bg-amber-950/40 p-5 text-center shadow-2xl backdrop-blur-xl animate-pulse">
+              <div className="inline-flex items-center gap-2 rounded-full bg-amber-500/20 px-3 py-1 text-xs font-bold text-amber-300 mb-2">
+                <span>🔒 ACCESO RESTRINGIDO AL PANEL</span>
+              </div>
+              <h3 className="text-lg font-black text-white">
+                {payAlert === 'expired'
+                  ? 'Tu suscripción ha vencido. Renuévala para continuar.'
+                  : 'Debes activar tu membresía para acceder a las herramientas de marketing.'}
+              </h3>
+              <p className="text-xs text-amber-200/80 mt-1 max-w-xl mx-auto">
+                Selecciona tu plan a continuación y paga de forma segura mediante <strong>Webpay Plus (Flow.cl)</strong> o <strong>Copec Pay</strong> para desbloquear tu acceso de inmediato.
+              </p>
+            </div>
+          )}
+
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="rounded-full bg-indigo-500/10 border border-indigo-500/30 px-4 py-1 text-xs font-semibold text-indigo-300">
               PRECIOS TRANSPARENTES
@@ -437,37 +500,67 @@ export default function LandingPage() {
               Elige tu plan y empieza a vender hoy
             </h2>
             <p className="mt-4 text-slate-300">
-              Paga en pesos chilenos con <strong>Mercado Pago</strong> o por <strong>Transferencia bancaria directa</strong>. Sin costos ocultos.
+              Paga en pesos chilenos con <strong>Webpay Plus (Flow.cl)</strong> o por <strong>Transferencia Copec Pay</strong>. Sin contratos ni costos ocultos.
             </p>
 
-            {/* Currency Switcher */}
-            <div className="mt-8 inline-flex items-center rounded-xl bg-slate-900 border border-slate-800 p-1">
-              <button
-                onClick={() => setCurrency('CLP')}
-                className={`rounded-lg px-4 py-2 text-xs font-bold transition ${
-                  currency === 'CLP' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                🇨🇱 Pesos Chilenos (CLP)
-              </button>
-              <button
-                onClick={() => setCurrency('USD')}
-                className={`rounded-lg px-4 py-2 text-xs font-bold transition ${
-                  currency === 'USD' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                🌎 Dólares (USD)
-              </button>
+            {/* Control Bars: Currency & Annual Billing */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              {/* Billing Cycle Switcher */}
+              <div className="inline-flex items-center rounded-xl bg-slate-900 border border-slate-800 p-1">
+                <button
+                  onClick={() => setBillingCycle('mensual')}
+                  className={`rounded-lg px-4 py-2 text-xs font-bold transition ${
+                    billingCycle === 'mensual' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  Facturación Mensual
+                </button>
+                <button
+                  onClick={() => setBillingCycle('anual')}
+                  className={`rounded-lg px-4 py-2 text-xs font-bold transition flex items-center gap-1.5 ${
+                    billingCycle === 'anual' ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <span>Facturación Anual</span>
+                  <span className="rounded-full bg-amber-400 text-black text-[9px] font-black px-1.5 py-0.5 uppercase tracking-wider">
+                    2 Meses Gratis
+                  </span>
+                </button>
+              </div>
+
+              {/* Currency Switcher */}
+              <div className="inline-flex items-center rounded-xl bg-slate-900 border border-slate-800 p-1">
+                <button
+                  onClick={() => setCurrency('CLP')}
+                  className={`rounded-lg px-4 py-2 text-xs font-bold transition ${
+                    currency === 'CLP' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🇨🇱 Pesos Chilenos (CLP)
+                </button>
+                <button
+                  onClick={() => setCurrency('USD')}
+                  className={`rounded-lg px-4 py-2 text-xs font-bold transition ${
+                    currency === 'USD' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🌎 Dólares (USD)
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
             {plans.map((p) => {
-              const precio = currency === 'CLP' ? p.precioCLP : p.precioUSD;
+              const precio =
+                billingCycle === 'anual'
+                  ? (currency === 'CLP' ? p.precioAnualCLP : p.precioAnualUSD)
+                  : (currency === 'CLP' ? p.precioCLP : p.precioUSD);
+              const periodo = billingCycle === 'anual' ? '/año (2 meses gratis)' : p.periodo;
               return (
                 <div
                   key={p.id}
-                  className={`relative flex flex-col rounded-3xl border p-8 transition hover:scale-[1.01] ${
+                  className={`relative flex flex-col rounded-3xl border p-6 transition hover:scale-[1.01] ${
                     p.destacado
                       ? 'border-indigo-500 bg-gradient-to-b from-indigo-950/60 via-slate-900 to-[#0c1220] shadow-2xl shadow-indigo-500/20'
                       : 'border-slate-800 bg-slate-900/50'
@@ -524,7 +617,7 @@ export default function LandingPage() {
                       className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-300 border border-slate-700 bg-slate-800/80 hover:bg-slate-700 transition flex items-center justify-center gap-2"
                     >
                       <Building className="h-3.5 w-3.5 text-indigo-400" />
-                      Pagar por Transferencia / CuentaRUT
+                      Pagar por Transferencia (Copec Pay)
                     </button>
                   </div>
                 </div>
@@ -557,33 +650,33 @@ export default function LandingPage() {
 
             <div className="space-y-3 rounded-xl border border-slate-800 bg-slate-900/80 p-4 text-xs">
               <div className="flex justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Destinatario:</span>
-                <span className="font-semibold text-white">Segar AI Marketing SpA</span>
-              </div>
-              <div className="flex justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-400">RUT:</span>
-                <span className="font-semibold text-white">77.123.456-7</span>
-              </div>
-              <div className="flex justify-between border-b border-slate-800 pb-2">
                 <span className="text-slate-400">Banco:</span>
-                <span className="font-semibold text-white">Banco Estado / Cuenta RUT</span>
+                <span className="font-bold text-white text-emerald-400">{CONTACT_INFO.transferencia.banco}</span>
               </div>
               <div className="flex justify-between border-b border-slate-800 pb-2">
                 <span className="text-slate-400">Tipo de Cuenta:</span>
-                <span className="font-semibold text-white">Cuenta Vista / RUT</span>
+                <span className="font-semibold text-white">{CONTACT_INFO.transferencia.tipoCuenta}</span>
               </div>
               <div className="flex justify-between border-b border-slate-800 pb-2">
                 <span className="text-slate-400">N° de Cuenta:</span>
-                <span className="font-semibold text-white">123456789</span>
+                <span className="font-mono font-bold text-indigo-300 text-sm select-all">{CONTACT_INFO.transferencia.numeroCuenta}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-2">
+                <span className="text-slate-400">RUT:</span>
+                <span className="font-mono font-bold text-white select-all">{CONTACT_INFO.transferencia.rut}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-2">
+                <span className="text-slate-400">Email comprobante:</span>
+                <span className="font-semibold text-slate-200 select-all">{CONTACT_INFO.email}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Email comprobante:</span>
-                <span className="font-semibold text-indigo-300">pagos@segar.ai</span>
+                <span className="text-slate-400">WhatsApp confirmación:</span>
+                <span className="font-bold text-emerald-400">{CONTACT_INFO.whatsappDisplay}</span>
               </div>
             </div>
 
             <div className="mt-4 p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-200 text-xs">
-              💡 <strong>Paso siguiente:</strong> Transfiere el monto correspondiente y haz clic abajo para enviar tu comprobante directo a nuestro WhatsApp. Te activamos la membresía en menos de 10 minutos.
+              💡 <strong>Paso siguiente:</strong> Transfiere a <strong>Copec Pay (Cuenta Vista)</strong> y haz clic abajo para enviar tu comprobante directo a nuestro WhatsApp ({CONTACT_INFO.whatsappDisplay}). Te activamos la cuenta en 5 minutos.
             </div>
 
             <div className="mt-6 flex flex-col gap-2">
@@ -597,7 +690,7 @@ export default function LandingPage() {
                 className="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30"
               >
                 <Send className="h-4 w-4" />
-                Enviar Comprobante por WhatsApp
+                Enviar Comprobante por WhatsApp ({CONTACT_INFO.whatsappDisplay})
               </a>
               <button
                 onClick={() => setTransferModalPlan(null)}
@@ -661,14 +754,32 @@ export default function LandingPage() {
           <div className="flex items-center gap-6">
             <Link href="/dashboard" className="hover:text-white transition">Acceso Clientes</Link>
             <Link href="/dashboard/admin" className="hover:text-white transition">Super Admin</Link>
-            <a href="https://wa.me/56912345678" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-              Soporte WhatsApp
+            <a
+              href={CONTACT_INFO.getWhatsAppUrl('¡Hola! Necesito soporte o información sobre Segar AI Marketing')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-400 font-semibold hover:text-emerald-300 transition flex items-center gap-1.5"
+            >
+              <MessageSquare className="h-4 w-4" />
+              WhatsApp {CONTACT_INFO.whatsappDisplay}
             </a>
           </div>
 
           <p>© 2026 Segar AI Marketing. Potenciado por Google Gemini & Pollinations.</p>
         </div>
       </footer>
+
+      {/* Botón Flotante Oficial de WhatsApp */}
+      <a
+        href={CONTACT_INFO.getWhatsAppUrl('¡Hola! Quiero activar mi membresía o consultar sobre Segar AI Marketing')}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Contactar por WhatsApp al +56 9 91842110"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-3 text-white shadow-2xl shadow-emerald-500/40 hover:bg-emerald-400 transition hover:scale-105"
+      >
+        <MessageSquare className="h-5 w-5" />
+        <span className="text-xs font-bold hidden sm:inline">{CONTACT_INFO.whatsappDisplay}</span>
+      </a>
     </div>
   );
 }

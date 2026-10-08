@@ -29,3 +29,12 @@ export function generatePollinationsImageUrl(
 
   return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&model=${model}&seed=${seed}&nologo=${nologo}`;
 }
+
+export function generarImagenPollinations(
+  prompt: string,
+  width: number = 1080,
+  height: number = 1080,
+  model: 'flux' | 'flux-realism' | 'turbo' = 'flux'
+): string {
+  return generatePollinationsImageUrl(prompt, { width, height, model });
+}

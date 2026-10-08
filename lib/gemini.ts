@@ -65,6 +65,8 @@ export async function callGemini(
   }
 }
 
+export const llamarGemini = callGemini;
+
 // 1. GENERADOR DE DIAGNÓSTICO 360 & PLAN 30 DÍAS
 export async function generateMarketingDiagnostic(info: {
   nombre: string;

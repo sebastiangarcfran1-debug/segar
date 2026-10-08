@@ -87,9 +87,9 @@ export default function TelegramPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setTestStatus('¡Mensaje enviado con éxito a la API de Telegram!');
+        setTestStatus('¡Mensaje enviado con éxito a la API de Telegram! Revisa tu aplicación de Telegram.');
       } else {
-        setTestStatus(`Respuesta: ${data.error || 'Mensaje procesado en modo simulado (agrega TELEGRAM_BOT_TOKEN en .env.local para recibirlo en tu teléfono)'}`);
+        setTestStatus(data.error || 'Telegram no configurado. Ingresa tu Token en el Panel Super Admin para recibir alertas reales.');
       }
     } catch (err: any) {
       setTestStatus('Error enviando a Telegram.');
@@ -100,14 +100,24 @@ export default function TelegramPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-black text-white flex items-center gap-2">
-          <Bot className="h-6 w-6 text-purple-400" />
-          Telegram como Panel de Control Móvil ($0 Costo)
-        </h1>
-        <p className="mt-1 text-xs text-slate-400">
-          Controla tu agencia de marketing desde la palma de tu mano sin entrar a la computadora. Aprueba o pide correcciones a Gemini con 1 solo toque.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-black text-white flex items-center gap-2">
+            <Bot className="h-6 w-6 text-purple-400" />
+            Telegram como Panel de Control Móvil ($0 Costo)
+          </h1>
+          <p className="mt-1 text-xs text-slate-400">
+            Controla tu agencia de marketing desde la palma de tu mano sin entrar a la computadora. Aprueba o pide correcciones a Gemini con 1 solo toque.
+          </p>
+        </div>
+
+        <a
+          href="/dashboard/admin"
+          className="inline-flex items-center gap-2 rounded-xl bg-purple-950/40 border border-purple-500/40 px-3.5 py-2 text-xs font-bold text-purple-300 hover:bg-purple-900/60 transition"
+        >
+          <Bot className="h-4 w-4" />
+          <span>Configurar Bot en Super Admin</span>
+        </a>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">

@@ -1,11 +1,30 @@
-# Deno
-# https://deno.com/
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-# Cache directory (when using project-local DENO_DIR)
-# https://docs.deno.com/runtime/fundamentals/setup/#deno_dir
-.deno/
+# Testing
+/coverage
 
-# Coverage reports
-# https://docs.deno.com/runtime/reference/cli/coverage/
-coverage/
-*.lcov
+# Next.js build output
+/.next/
+/out/
+
+# Production build artifacts
+build
+
+# Misc
+.DS_Store
+*.pem
+
+# Local environment and secrets (CRITICAL: Do not upload to GitHub)
+.env*.local
+.env
+.local-db.json
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

@@ -6,13 +6,88 @@
       "nombre": "Negocio Demo Chile",
       "rubro": "Comercio / Tienda Online",
       "instagram": "@demo.chile",
-      "plan": "emprendedor",
-      "postsUsados": 5,
-      "anunciosUsados": 1,
-      "closerRespuestasUsadas": 18,
-      "periodoInicio": "2026-10-06T00:51:35.320Z",
+      "plan": "pro",
+      "postsUsados": 0,
+      "anunciosUsados": 0,
+      "closerRespuestasUsadas": 0,
+      "periodoInicio": "2026-10-08T15:39:52.911Z",
       "activo": true,
-      "origenPago": "mercadopago"
+      "origenPago": "transferencia",
+      "fechaExpiracion": "2027-02-05T01:50:57.668Z",
+      "estadoPago": "al_dia",
+      "roiMetrics": {
+        "leadsGenerados": 2,
+        "ventasEstimadasCLP": 59800,
+        "horasAhorradas": 0,
+        "costoAgenciaAhorradoCLP": 350000
+      }
+    },
+    "test_pyme_1791465945446_chilepyme_cl": {
+      "userId": "test_pyme_1791465945446_chilepyme_cl",
+      "email": "test_pyme_1791465945446@chilepyme.cl",
+      "nombre": "Panadería La Espiga Santiago",
+      "passwordHash": "1aa45fe1a59649280741fe6ba151cec8a2a86e1cc4503e2196ee78ea6ea38620",
+      "role": "user",
+      "plan": "pro",
+      "telefono": "+56988887777",
+      "rubro": "Panadería y Pastelería",
+      "postsUsados": 0,
+      "anunciosUsados": 0,
+      "closerRespuestasUsadas": 0,
+      "periodoInicio": "2026-10-08T13:25:52.642Z",
+      "fechaExpiracion": "2026-12-07T13:25:46.739Z",
+      "activo": false,
+      "estadoPago": "inactivo",
+      "origenPago": "flow_webpay"
+    },
+    "test_pyme_1791467134739_chilepyme_cl": {
+      "userId": "test_pyme_1791467134739_chilepyme_cl",
+      "email": "test_pyme_1791467134739@chilepyme.cl",
+      "nombre": "Panadería La Espiga Santiago",
+      "passwordHash": "1aa45fe1a59649280741fe6ba151cec8a2a86e1cc4503e2196ee78ea6ea38620",
+      "role": "user",
+      "plan": "pro",
+      "telefono": "+56988887777",
+      "rubro": "Panadería y Pastelería",
+      "postsUsados": 0,
+      "anunciosUsados": 0,
+      "closerRespuestasUsadas": 0,
+      "periodoInicio": "2026-10-08T13:45:43.475Z",
+      "fechaExpiracion": "2026-12-07T13:45:34.885Z",
+      "activo": false,
+      "estadoPago": "inactivo",
+      "origenPago": "flow_webpay"
+    },
+    "usuario_web": {
+      "userId": "usuario_web",
+      "plan": "emprendedor",
+      "postsUsados": 0,
+      "anunciosUsados": 0,
+      "closerRespuestasUsadas": 0,
+      "periodoInicio": "2026-10-08T15:30:18.182Z",
+      "fechaExpiracion": "2026-12-07T15:30:01.205Z",
+      "activo": true,
+      "origenPago": "transferencia",
+      "estadoPago": "al_dia"
+    },
+    "segar_servicios_": {
+      "userId": "segar_servicios_",
+      "plan": "agencia",
+      "postsUsados": 0,
+      "anunciosUsados": 0,
+      "closerRespuestasUsadas": 0,
+      "periodoInicio": "2026-10-08T15:45:38.963Z",
+      "fechaExpiracion": "2026-11-07T15:45:38.963Z",
+      "activo": true,
+      "origenPago": "copec_pay",
+      "estadoPago": "al_dia",
+      "nombre": "segar servicios",
+      "email": "sebastiangarcfran1@gmail.com",
+      "telefono": "+56949697060",
+      "rubro": "remodelacion",
+      "instagram": "@",
+      "notasEquipo": "Cliente agregado manualmente por el Super Administrador.",
+      "estrategiaPersonalizada": ""
     }
   },
   "onboardings": {},
@@ -28,11 +103,123 @@
       "metodo": "mercadopago",
       "estado": "approved",
       "fecha": "2026-10-06T00:51:35.322Z"
+    },
+    {
+      "id": "trx_1791423861181",
+      "userId": "demo_user",
+      "plan": "pro",
+      "montoCLP": 29900,
+      "metodo": "transferencia",
+      "estado": "approved",
+      "fecha": "2026-10-08T01:44:21.182Z"
+    },
+    {
+      "id": "trx_1791424242983",
+      "userId": "demo_user",
+      "plan": "agencia",
+      "montoCLP": 59900,
+      "metodo": "transferencia",
+      "estado": "approved",
+      "fecha": "2026-10-08T01:50:42.983Z"
+    },
+    {
+      "id": "trx_1791424251024",
+      "userId": "demo_user",
+      "plan": "emprendedor",
+      "montoCLP": 15000,
+      "metodo": "transferencia",
+      "estado": "approved",
+      "fecha": "2026-10-08T01:50:51.024Z"
+    },
+    {
+      "id": "trx_1791424257668",
+      "userId": "demo_user",
+      "plan": "pro",
+      "montoCLP": 29900,
+      "metodo": "transferencia",
+      "estado": "approved",
+      "fecha": "2026-10-08T01:50:57.668Z"
+    },
+    {
+      "id": "trx_flow_1791465950502",
+      "userId": "demo_user",
+      "plan": "pro",
+      "montoCLP": 29900,
+      "metodo": "flow_webpay",
+      "estado": "approved",
+      "fecha": "2026-10-08T13:25:50.502Z"
+    },
+    {
+      "id": "trx_flow_1791467143255",
+      "userId": "demo_user",
+      "plan": "pro",
+      "montoCLP": 29900,
+      "metodo": "flow_webpay",
+      "estado": "approved",
+      "fecha": "2026-10-08T13:45:43.255Z"
+    },
+    {
+      "id": "trx_flow_1791473401222",
+      "userId": "usuario_web",
+      "plan": "emprendedor",
+      "montoCLP": 15000,
+      "metodo": "transferencia",
+      "estado": "approved",
+      "fecha": "2026-10-08T15:30:01.222Z"
+    },
+    {
+      "id": "trx_flow_1791473418182",
+      "userId": "usuario_web",
+      "plan": "emprendedor",
+      "montoCLP": 15000,
+      "metodo": "transferencia",
+      "estado": "approved",
+      "fecha": "2026-10-08T15:30:18.182Z"
+    },
+    {
+      "id": "trx_flow_1791473992911",
+      "userId": "demo_user",
+      "plan": "pro",
+      "montoCLP": 29900,
+      "metodo": "transferencia",
+      "estado": "approved",
+      "fecha": "2026-10-08T15:39:52.912Z"
+    },
+    {
+      "id": "trx_manual_1791474338968",
+      "userId": "segar_servicios_",
+      "plan": "agencia",
+      "montoCLP": 59900,
+      "metodo": "copec_pay",
+      "estado": "approved",
+      "fecha": "2026-10-08T15:45:38.968Z"
     }
   ],
   "metrics": {
-    "totalGeminiCalls": 12,
+    "totalGeminiCalls": 13,
     "totalPollinationsImages": 10,
-    "totalRevenueCLP": 15000
-  }
+    "totalRevenueCLP": 329300
+  },
+  "settings": {
+    "telegramBotToken": "8918876529:AAHgfR7usXrN5ulJwI1pXVJmY1SRnuxUpWk",
+    "telegramChatId": "8948607426",
+    "flowApiKey": "tu-flow-api-key-aqui",
+    "flowSecretKey": "tu-flow-secret-key-aqui",
+    "flowEnv": "sandbox",
+    "whatsappVentas": "56991842110",
+    "geminiApiKey": ""
+  },
+  "whatsappLeads": [
+    {
+      "id": "lead_1791472622988",
+      "userId": "demo_user",
+      "phone": "+56991842110",
+      "name": "@boutique_bella.cl (Moda Femenina)",
+      "lastMessage": "Auditoría Viral solicitada: Score 62/100. Fuga estimada: $520.000 a $1.250.000 CLP / mes",
+      "aiReply": "Diagnóstico generado exitosamente para @boutique_bella.cl",
+      "timestamp": "2026-10-08T15:23:51.128Z",
+      "status": "nuevo",
+      "dealValueCLP": 29900
+    }
+  ]
 }

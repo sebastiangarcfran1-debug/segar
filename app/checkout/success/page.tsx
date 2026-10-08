@@ -8,20 +8,30 @@ import { CheckCircle, Sparkles, ArrowRight, Bot, ShieldCheck, Loader2 } from 'lu
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const plan = searchParams.get('plan') || 'pro';
-  const isMock = searchParams.get('mock') === 'true';
+  const userId = searchParams.get('userId') || '';
+  const token = searchParams.get('token') || '';
 
   useEffect(() => {
-    // Si viene de pago real o simulado, podemos disparar la activación
+    // 1. Si viene token de Flow, confirmar con la pasarela
+    if (token) {
+      fetch(`/api/webhooks/flow?token=${encodeURIComponent(token)}`).catch(() => {});
+    }
+
+    // 2. Si se especificó userId o es demo, asegurar activación en base de datos
+    const targetUserId = userId || 'demo_user';
     fetch('/api/admin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         action: 'activar_transferencia',
-        userId: 'demo_user',
+        userId: targetUserId,
         plan,
       }),
+    }).then(() => {
+      // 3. Sincronizar y re-emitir cookie JWT con activo: true
+      fetch('/api/auth/me').catch(() => {});
     }).catch(console.error);
-  }, [plan]);
+  }, [plan, userId, token]);
 
   return (
     <div className="max-w-md w-full rounded-3xl border border-emerald-500/40 bg-slate-900/90 p-8 text-center shadow-2xl backdrop-blur-xl relative overflow-hidden">
@@ -69,6 +79,14 @@ function CheckoutContent() {
         >
           Ir al Panel Principal
         </Link>
+        <a
+          href="https://wa.me/56991842110?text=%C2%A1Hola!%20Acabo%20de%20activar%20mi%20cuenta%20en%20Segar%20AI%20Marketing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full py-2.5 text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center justify-center gap-1.5"
+        >
+          Soporte por WhatsApp (+56 9 91842110)
+        </a>
       </div>
     </div>
   );
